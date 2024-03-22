@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- 디스패쳐서블릿이다. -->
+
+	<!-- HandlerMapping : 요청에 따른 컨트롤러 클래스 지정 (일반적으로는 어노테이션 처리) -->
+	
+	<beans:bean name="/start1.do" class="com.ict.controller.Start1Controller" />
+	<beans:bean name="/start2.do" class="com.ict.controller.Start2Controller" />
+	
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- 뷰리졸버 파일의 위치와 확장자를 완성시켜준다. -->
+	<!-- 뷰리졸버 : 컨트롤러에서 리턴한 ModelandView에 ViewName에 접두어와 접미어가 붙어서 뷰를 완성한다. 
+		 		  완성된 View는 클라이언트에게 간다.  
+				  만약 ViewName이 result1 이라면 /WEB-INF/views/result1.jsp 으로 완성된다. 
+				  만약 ViewName이 admin/result2 이라면 /WEB-INF/views/admin/result2.jsp 으로 완성된다. -->
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<!-- 어노테이션 지정방법 -->
+	<!-- 1. Namespaces 에 가서 context 추가 -->
+	<!-- 2. 추가 <annotation-driven></annotation-driven> -->
+	<!-- 3. <context : component-scan base-package="어노테이션 할 패키지를 지정" /> 추가 -->
+	<!-- 4. 해당 클래스 위에서 어노테이션 하면 된다.  -->
+	<!--  
+		일반적인 클래스를 객체로 만들 때 사용하는 어노테이션 
+		@Component : 가장 상위 클래스 
+		
+		@Service : 비지니스 레이어를 처리하는 클래스 사용 (MVC패턴 중 서비스에 해당하는 클래스에 붙여준다.)
+		@Repository : DAO 에서  처리하는 클래스 사용 (MVC 패턴 중 맵퍼에 해당하는 클래스에 붙여준다.)
+		@Controller : 컨트롤러에 해당 하는 클래스 사용 (MVC 패턴 중 컨트롤러에 해당하는 클래스에 붙여준다.)
+		** ID 부여를 하지 않으면 자동으로 해당 클래스의 이름을 사용한다. (단, 첫글자가 소문자가 된다.)
+	-->
+	<annotation-driven></annotation-driven>
+	<context:component-scan base-package="com.ict"></context:component-scan>
+	
+	<!-- 파일업로드용 클래스 등록 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<beans:property name="maxUploadSize" value="104857600" />
+		<beans:property name="defaultEncoding" value="UTF-8" />
+	</beans:bean>
+	
+</beans:beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
